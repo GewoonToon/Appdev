@@ -19,5 +19,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Price"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add to cart"
+        android:onClick="addToCart"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/amountDown"
+        android:text="-"
+        android:onClick="amountDown"/>
+
+    <TextView
+        android:id="@+id/amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1"/>
+
+    <Button
+        android:id="@+id/amountUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="amountUp"
+        android:text="+" />
+
 
 </LinearLayout>

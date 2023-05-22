@@ -39,9 +39,11 @@ public class DatabaseManager {
         return cursor;
     }
 
-    public void insertIntoCart (String id, String amount){
+    public void insertIntoCart (String id, String amount, String name, String price){
         ContentValues contentValues = new ContentValues();
         contentValues.put(DatabaseHelper.CARTPRODUCT_ID, id);
+        contentValues.put(DatabaseHelper.CARTPRODUCT_NAME, name);
+        contentValues.put(DatabaseHelper.CARTPRODUCT_PRICE, price);
         contentValues.put(DatabaseHelper.CART_AMOUNT, amount);
         database.insert(DatabaseHelper.CART_TABLE, null, contentValues);
     }

@@ -20,6 +20,8 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.appdev.databinding.ActivityProductDetailsBinding;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -27,6 +29,7 @@ public class productDetailsActivity extends AppCompatActivity {
 
     private ActivityProductDetailsBinding binding;
     DatabaseManager dbManager;
+    private int amount = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +68,56 @@ public class productDetailsActivity extends AppCompatActivity {
                 TextView price = this.findViewById(R.id.Price);
                 price.setText(product.price);
                 //set all the text correct
-                Log.i("Correct product found", product.toString());
             }
         }
 
     }
+
+    public void addToCart(View view) {
+        String id = getIntent().getStringExtra("id");
+        dbManager = new DatabaseManager(this);
+        try {
+            dbManager.open();
+            Log.i("dbmanager.open", "done");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.i("dbmanager.open", "failed");
+        }
+
+        ArrayList<Product> productList = new ArrayList<>();
+        Cursor cursor = dbManager.fetchProducts();
+
+        if (cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range") String ID = cursor.getString(cursor.getColumnIndex(DatabaseHelper.PRODUCT_ID));
+                @SuppressLint("Range") String NAME = cursor.getString(cursor.getColumnIndex(DatabaseHelper.PRODUCT_NAME));
+                @SuppressLint("Range") String PRICE = cursor.getString(cursor.getColumnIndex(DatabaseHelper.PRODUCT_PRICE));
+                Log.i("DATABASE_TAG", "I have read ID: " + ID + " USERNAME: " + NAME + "  PRICE: " + PRICE);
+                productList.add(new Product(ID, NAME, PRICE));
+            } while (cursor.moveToNext());
+        }
+
+        for (Product product : productList) {
+            if (Objects.equals(product.id, id)) {
+                dbManager.insertIntoCart(product.id, String.valueOf(this.amount), product.name, product.price);
+            }
+        }
+
+    }
+
+    public void amountUp(View view) {
+        this.amount++;
+        TextView amountview = this.findViewById(R.id.amount);
+        amountview.setText(String.valueOf(amount));
+    }
+
+    public void amountDown(View view) {
+        if (this.amount > 1) {
+            this.amount--;
+            TextView amountview = this.findViewById(R.id.amount);
+            amountview.setText(String.valueOf(amount));
+        }
+    }
+
+
 }

@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     static final String DATABASE_NAME = "Database.DB";
-    static final int DATABASE_VERSION = 1;
+    static final int DATABASE_VERSION = 5;
     static final String PRODUCTS_TABLE = "PRODUCTS";
     static final String PRODUCT_ID = "PRODUCT_ID";
     static final String PRODUCT_NAME = "product_name";
@@ -55,6 +55,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + PRODUCTS_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + CART_TABLE);
+        db.execSQL(CREATE_DB_QUERY_PRODUCTS);
+        db.execSQL(CREATE_DB_QUERY_CART);
+        db.execSQL(INSERT_DUMMY_DATA_PRODUCTS);
 
     }
 }
