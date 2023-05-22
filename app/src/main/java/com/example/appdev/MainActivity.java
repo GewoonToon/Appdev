@@ -64,4 +64,20 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("id", String.valueOf(view.getId()));
         startActivity(intent);
     }
+
+    public void removeItem(View view){
+        dbManager = new DatabaseManager(view.getContext());
+        try {
+            dbManager.open();
+            Log.i("dbmanager.open", "done");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            Log.i("dbmanager.open", "failed");
+        }
+        int id = view.getId();
+        Log.i("delete cart id", String.valueOf(id));
+        dbManager.deleteCart((long) id);
+        replaceFragment(new CartFragment());
+    }
 }

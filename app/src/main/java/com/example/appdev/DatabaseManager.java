@@ -39,6 +39,16 @@ public class DatabaseManager {
         return cursor;
     }
 
+    public Cursor fetchCart(){
+        String [] columns = new String[] {DatabaseHelper.CART_ID, DatabaseHelper.CARTPRODUCT_NAME, DatabaseHelper.CARTPRODUCT_PRICE, DatabaseHelper.CART_AMOUNT};
+        Cursor cursor = database.query(DatabaseHelper.CART_TABLE, columns, null, null, null, null, null);
+        if(cursor != null){
+            cursor.moveToFirst();
+            Log.i("Cursor is not null : ", cursor.toString());
+        }
+        return cursor;
+    }
+
     public void insertIntoCart (String id, String amount, String name, String price){
         ContentValues contentValues = new ContentValues();
         contentValues.put(DatabaseHelper.CARTPRODUCT_ID, id);
@@ -56,7 +66,9 @@ public class DatabaseManager {
     }
 
     public void deleteCart(long _id){
+        Log.i("db delete cart id", String.valueOf(_id));
         database.delete(DatabaseHelper.CART_TABLE, DatabaseHelper.CART_ID + "=" + _id, null);
+        Log.i("db delete cart id", "done");
     }
 
 }
