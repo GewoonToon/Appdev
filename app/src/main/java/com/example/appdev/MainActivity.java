@@ -47,15 +47,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-        dbManager = new DatabaseManager(this);
-        try {
-            dbManager.open();
-            Log.i("dbmanager.open", "done");
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            Log.i("dbmanager.open", "failed");
-        }
+
 
     }
 
@@ -64,19 +56,5 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frameLayout, fragment);
         fragmentTransaction.commit();
-    }
-
-
-    public void btnFetchPressed(View view){
-        Cursor cursor = dbManager.fetchProducts();
-
-        if(cursor.moveToFirst()){
-            do {
-                @SuppressLint("Range") String ID = cursor.getString(cursor.getColumnIndex(DatabaseHelper.PRODUCT_ID));
-                @SuppressLint("Range") String NAME = cursor.getString(cursor.getColumnIndex(DatabaseHelper.PRODUCT_NAME));
-                @SuppressLint("Range") String PRICE = cursor.getString(cursor.getColumnIndex(DatabaseHelper.PRODUCT_PRICE));
-                Log.i("DATABASE_TAG", "I have read ID: "+ ID + " USERNAME: " + NAME + "  PRICE: " + PRICE);
-            } while (cursor.moveToNext());
-        }
     }
 }

@@ -10,26 +10,33 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
+    ArrayList<Product> productList;
+
+    public ProductAdapter(ArrayList<Product> productList) {
+        this.productList = productList;
+    }
 
     @NonNull
     @Override
     public ProductAdapter.ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.i("Test for productAdapter On Create", "done");
         View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_card, parent, false);
         return new ProductViewHolder(layoutView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ProductAdapter.ProductViewHolder holder, int position) {
-        Log.i("Test for productAdapter on Bind", "done");
+        holder.productTitle.setText(productList.get(position).name);
+        holder.productPrice.setText(productList.get(position).price);
     }
 
     @Override
     public int getItemCount() {
 
-        return 20;
+        return productList.size();
     }
 
     static class ProductViewHolder extends RecyclerView.ViewHolder {
@@ -40,7 +47,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
-            Log.i("Test for productAdapter constructor", "done");
         }
     }
 }

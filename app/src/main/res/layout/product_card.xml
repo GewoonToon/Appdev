@@ -32,13 +32,15 @@
                 android:id="@+id/cardTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Title" />
+                android:text="Title"
+                android:textColor="#FFFFFF" />
 
             <TextView
                 android:id="@+id/cardPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Price" />
+                android:text="Price"
+                android:textColor="#FFFFFF" />
         </LinearLayout>
 
     </LinearLayout>

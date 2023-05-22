@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 
 public class ShopFragment extends Fragment {
 
@@ -21,7 +23,7 @@ public class ShopFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-
+    DatabaseManager dbManager;
     private String mParam1;
     private String mParam2;
 
@@ -56,9 +58,33 @@ public class ShopFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 2, GridLayoutManager.VERTICAL, false));
 
-        ProductAdapter adapter = new ProductAdapter();
+        //Add all products from database to an arraylist
+        dbManager = new DatabaseManager(view.getContext());
+        try {
+            dbManager.open();
+            Log.i("dbmanager.open", "done");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            Log.i("dbmanager.open", "failed");
+        }
+
+        ArrayList<Product> productList = new ArrayList<>();
+        Cursor cursor = dbManager.fetchProducts();
+
+        if(cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range") String ID = cursor.getString(cursor.getColumnIndex(DatabaseHelper.PRODUCT_ID));
+                @SuppressLint("Range") String NAME = cursor.getString(cursor.getColumnIndex(DatabaseHelper.PRODUCT_NAME));
+                @SuppressLint("Range") String PRICE = cursor.getString(cursor.getColumnIndex(DatabaseHelper.PRODUCT_PRICE));
+                Log.i("DATABASE_TAG", "I have read ID: " + ID + " USERNAME: " + NAME + "  PRICE: " + PRICE);
+                productList.add(new Product(ID, NAME, PRICE));
+            } while (cursor.moveToNext());
+        }
+
+
+        ProductAdapter adapter = new ProductAdapter(productList);
         recyclerView.setAdapter(adapter);
-        Log.i("Test for ShopFragment", adapter.toString());
 
         return view;
     }
