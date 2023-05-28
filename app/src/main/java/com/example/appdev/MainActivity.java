@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         replaceFragment(new HomeFragment());
-        Log.i("Test for log", "Test");
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
@@ -76,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
             Log.i("dbmanager.open", "failed");
         }
         int id = view.getId();
-        Log.i("delete cart id", String.valueOf(id));
         dbManager.deleteCart((long) id);
         replaceFragment(new CartFragment());
     }
