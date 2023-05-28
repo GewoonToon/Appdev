@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="@color/card_light_background"
+    app:cardBackgroundColor="@color/card_background"
     android:layout_marginTop="10dp"
     android:layout_marginEnd="10dp"
     android:layout_marginStart="10dp"
@@ -22,21 +22,21 @@
                 android:layout_width="190dp"
                 android:layout_height="wrap_content"
                 android:text="Title"
-                android:textColor="@color/black" />
+                android:textColor="@color/text" />
 
             <TextView
                 android:id="@+id/cardCartPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Price"
-                android:textColor="@color/black" />
+                android:textColor="@color/text" />
 
             <TextView
                 android:id="@+id/cardCartAmount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Amount"
-                android:textColor="@color/black" />
+                android:textColor="@color/text" />
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <color name="card_background">#FF424242</color>
+    <color name="text">#FFFFFFFF</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="background">#54545454</color>
+</resources>
