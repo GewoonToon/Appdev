@@ -1,6 +1,7 @@
 package com.example.appdev;
 
 import android.annotation.SuppressLint;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 
@@ -56,7 +57,12 @@ public class CartFragment extends Fragment {
 
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_cart);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 2, GridLayoutManager.VERTICAL, false));
+        if(getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 2, GridLayoutManager.VERTICAL, false));
+        }
+        if(getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 4, GridLayoutManager.VERTICAL, false));
+        }
 
         //Add all products from database to an arraylist
         dbManager = new DatabaseManager(view.getContext());
