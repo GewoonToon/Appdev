@@ -1,7 +1,9 @@
 package com.example.appdev;
 
+import static android.content.Context.MODE_PRIVATE;
 import static android.content.Context.WINDOW_SERVICE;
 
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
@@ -19,6 +21,9 @@ import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
+import java.util.Locale;
+import java.util.Objects;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link SettingsFragment#newInstance} factory method to
@@ -32,6 +37,7 @@ public class SettingsFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     Switch darkmodeSwitch;
     Switch sizeSwitch;
+    Switch languageSwitch;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -131,6 +137,33 @@ public class SettingsFragment extends Fragment {
             sizeSwitch.setChecked(true);
         }
 
+        languageSwitch = aa.findViewById(R.id.languageSwitch);
+
+        languageSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    setLanguage("nl");
+
+                }
+                else{
+                    setLanguage("en");
+                }
+            }
+        });
+
+        if(Objects.equals(getContext().getResources().getConfiguration().locale, new Locale("nl"))){
+            languageSwitch.setChecked(true);
+        }
+
         return aa;
     }
+
+    private void setLanguage(String lang){
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getActivity().getBaseContext().getResources().updateConfiguration(config, getActivity().getBaseContext().getResources().getDisplayMetrics());
+            }
 }

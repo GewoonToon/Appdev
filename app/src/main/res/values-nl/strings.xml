@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">App dev</string>
+    <string name="welcome">Nederlandse Tres fort</string>
+    <string name="addtocart">Voeg toe</string>
+    <string name="sizeoftext">Grootte van tekst</string>
+    <string name="switchLang">Verander naar engels</string>
+</resources>
