@@ -3,42 +3,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="20dp"
     android:fitsSystemWindows="true"
-    tools:context=".productDetailsActivity"
     android:orientation="vertical"
-    android:layout_margin="20dp">
+    tools:context=".ProductDetailsFragment">
 
     <TextView
-        android:id="@+id/Title"
+        android:id="@+id/frDetailName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Title"/>
+        android:text="Title" />
+
     <TextView
-        android:id="@+id/Price"
+        android:id="@+id/frDetailPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Price"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/addtocart"
-        android:onClick="addToCart"/>
+        android:text="Price" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/amountDown"
-        android:text="-"
-        android:onClick="amountDown"/>
-
-    <TextView
-        android:id="@+id/amount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="1"/>
+        android:id="@+id/frDetailAddToCart"
+        android:text="@string/addtocart" />
 
     <Button
-        android:id="@+id/amountUp"
+        android:id="@+id/frDetailAmountDown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-" />
+
+    <TextView
+        android:id="@+id/frDetailAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1" />
+
+    <Button
+        android:id="@+id/frDetailAmountUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="amountUp"
