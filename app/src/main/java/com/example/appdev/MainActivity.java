@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
             Log.i("Two sides", "true");
             constraintSet.connect(R.id.frameLayout, ConstraintSet.END, R.id.secondaryFrameLayout, ConstraintSet.START);
             constraintSet.applyTo(constraintLayout);
-        } else{
+        } else if(mMasterDetail){
             constraintSet.connect(R.id.frameLayout, ConstraintSet.END, R.id.secondaryFrameLayout, ConstraintSet.END);
             constraintSet.applyTo(constraintLayout);
         }
@@ -154,4 +154,11 @@ public class MainActivity extends AppCompatActivity {
         replaceFragment(new CartFragment(), false);
     }
 
+    public void closeApp(View view){
+        this.finishAffinity();
+    }
+
+    public void goSettings(View view){
+        replaceFragment(new SettingsFragment(), false);
+    }
 }

@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 public class CartFragment extends Fragment {
 
     DatabaseManager dbManager;
+    TextView title;
 
     public CartFragment() { }
 
@@ -42,6 +44,9 @@ public class CartFragment extends Fragment {
         if(getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 4, GridLayoutManager.VERTICAL, false));
         }
+
+        title = getActivity().findViewById(R.id.AppTitle);
+        title.setText("Cart");
 
         //Add all products from database to an arraylist
         dbManager = new DatabaseManager(view.getContext());

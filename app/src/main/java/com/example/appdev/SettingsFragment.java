@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
@@ -23,6 +24,7 @@ public class SettingsFragment extends Fragment {
     Switch darkmodeSwitch;
     Switch sizeSwitch;
     Switch languageSwitch;
+    TextView title;
 
 
 
@@ -55,6 +57,9 @@ public class SettingsFragment extends Fragment {
                 }
             }
         });
+
+        title = getActivity().findViewById(R.id.AppTitle);
+        title.setText("Settings");
 
         //Make switch be active after refreshing if darkmode is active
         int nightModeFlags =
