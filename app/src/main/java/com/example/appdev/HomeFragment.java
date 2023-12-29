@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 public class HomeFragment extends Fragment {
 
-    public static boolean mMasterDetail;
+
     TextView title;
 
     public HomeFragment() { }
@@ -23,7 +23,6 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
         title = getActivity().findViewById(R.id.AppTitle);
         title.setText("Home");

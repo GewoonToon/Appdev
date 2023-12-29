@@ -1,32 +1,26 @@
 package com.example.appdev;
 
-import static com.example.appdev.HomeFragment.mMasterDetail;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import static com.example.appdev.DatabaseHelper.CART_CONTENT_URI;
+import static com.example.appdev.DatabaseHelper.PRODUCT_CONTENT_URI;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.database.Cursor;
-import android.graphics.Point;
-import android.graphics.Typeface;
+import android.database.DatabaseUtils;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.CompoundButton;
-import android.widget.FrameLayout;
-import android.widget.Switch;
-import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.appdev.databinding.ActivityMainBinding;
 
@@ -34,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-
+    public static boolean mMasterDetail;
     ActivityMainBinding binding;
 
     DatabaseManager dbManager;
@@ -87,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
         ConstraintSet constraintSet = new ConstraintSet();
         constraintSet.clone(constraintLayout);
         if(twoSides){
-            Log.i("Two sides", "true");
             constraintSet.connect(R.id.frameLayout, ConstraintSet.END, R.id.secondaryFrameLayout, ConstraintSet.START);
             constraintSet.applyTo(constraintLayout);
         } else if(mMasterDetail){
@@ -104,35 +97,21 @@ public class MainActivity extends AppCompatActivity {
         } else{
             FragmentManager fragmentManager = getSupportFragmentManager();
             ProductDetailsFragment detailsFragment = new ProductDetailsFragment();
+            String id = String.valueOf(view.getId());
 
-            dbManager = new DatabaseManager(this);
-            try {
-                dbManager.open();
-                Log.i("dbmanager.open", "done");
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.i("dbmanager.open", "failed");
-            }
+            String selection = "PRODUCT_ID = ?";
+            String selectionArgs[] = {id};
+            Uri selectedProduct = PRODUCT_CONTENT_URI.buildUpon().appendPath(id).build();
+            Cursor productData = getContentResolver().query(selectedProduct, null, selection, selectionArgs, null);
+            Log.i("product Data in details", DatabaseUtils.dumpCursorToString(productData));
 
-            Product chosenProduct = null;
-            ArrayList<Product> productList = new ArrayList<>();
-            Cursor cursor = dbManager.fetchProducts();
-
-            if (cursor.moveToFirst()) {
-                do {
-                    @SuppressLint("Range") String ID = cursor.getString(cursor.getColumnIndex(DatabaseHelper.PRODUCT_ID));
-                    @SuppressLint("Range") String NAME = cursor.getString(cursor.getColumnIndex(DatabaseHelper.PRODUCT_NAME));
-                    @SuppressLint("Range") String PRICE = cursor.getString(cursor.getColumnIndex(DatabaseHelper.PRODUCT_PRICE));
-                    Log.i("DATABASE_TAG", "I have read ID: " + ID + " USERNAME: " + NAME + "  PRICE: " + PRICE);
-                    productList.add(new Product(ID, NAME, PRICE));
-                } while (cursor.moveToNext());
-            }
-
-            for (Product product : productList) {
-                if (Objects.equals(product.id, String.valueOf(view.getId()))) {
-                    chosenProduct = product;
-                }
-            }
+            productData.moveToFirst();
+            @SuppressLint("Range") Product chosenProduct = new Product(
+                    productData.getString(productData.getColumnIndex(DatabaseHelper.PRODUCT_ID)),
+                    productData.getString(productData.getColumnIndex(DatabaseHelper.PRODUCT_NAME)),
+                    productData.getString(productData.getColumnIndex(DatabaseHelper.PRODUCT_PRICE))
+            );
+            productData.close();
 
             detailsFragment.setProduct(chosenProduct);
 
@@ -141,16 +120,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void removeItem(View view) {
-        dbManager = new DatabaseManager(view.getContext());
-        try {
-            dbManager.open();
-            Log.i("dbmanager.open", "done");
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.i("dbmanager.open", "failed");
-        }
         int id = view.getId();
-        dbManager.deleteCart((long) id);
+        String selection = "CART_ID = ?";
+        String selectionArgs[] = {String.valueOf(id)};
+        Uri selectedProduct = CART_CONTENT_URI.buildUpon().appendPath(String.valueOf(id)).build();
+
+        getContentResolver().delete(selectedProduct,selection, selectionArgs);
         replaceFragment(new CartFragment(), false);
     }
 

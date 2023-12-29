@@ -1,12 +1,23 @@
 package com.example.appdev;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.net.Uri;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
+
+    public static final String AUTHORITY = "com.example.appdev";
+    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
+    public static final String CART_PATH = "cart";
+    public static final String PRODUCT_PATH = "products";
+    public static final Uri CART_CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(CART_PATH).build();
+    public static final Uri PRODUCT_CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PRODUCT_PATH).build();
 
     static final String DATABASE_NAME = "Database.DB";
     static final int DATABASE_VERSION = 5;

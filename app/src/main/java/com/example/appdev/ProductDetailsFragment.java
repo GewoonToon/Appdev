@@ -1,10 +1,18 @@
 package com.example.appdev;
 
-import static com.example.appdev.HomeFragment.mMasterDetail;
+import static com.example.appdev.DatabaseHelper.CARTPRODUCT_ID;
+import static com.example.appdev.DatabaseHelper.CARTPRODUCT_NAME;
+import static com.example.appdev.DatabaseHelper.CARTPRODUCT_PRICE;
+import static com.example.appdev.DatabaseHelper.CART_AMOUNT;
+import static com.example.appdev.DatabaseHelper.CART_CONTENT_URI;
+import static com.example.appdev.DatabaseHelper.PRODUCT_CONTENT_URI;
+import static com.example.appdev.MainActivity.mMasterDetail;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
+import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -41,6 +49,7 @@ public class ProductDetailsFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    @SuppressLint("Range")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,33 +65,19 @@ public class ProductDetailsFragment extends Fragment {
         if(!mMasterDetail){
             String id = getActivity().getIntent().getStringExtra("id");
 
-            dbManager = new DatabaseManager(getContext());
-            try {
-                dbManager.open();
-                Log.i("dbmanager.open", "done");
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.i("dbmanager.open", "failed");
-            }
+            String selection = "PRODUCT_ID = ?";
+            String selectionArgs[] = {id};
+            Uri selectedProduct = PRODUCT_CONTENT_URI.buildUpon().appendPath(id).build();
+            Cursor productCursor = getActivity().getContentResolver().query(selectedProduct, null, selection, selectionArgs, null);
+            Log.i("product Data in details", DatabaseUtils.dumpCursorToString(productCursor));
 
-            ArrayList<Product> productList = new ArrayList<>();
-            Cursor cursor = dbManager.fetchProducts();
-
-            if (cursor.moveToFirst()) {
-                do {
-                    @SuppressLint("Range") String ID = cursor.getString(cursor.getColumnIndex(DatabaseHelper.PRODUCT_ID));
-                    @SuppressLint("Range") String NAME = cursor.getString(cursor.getColumnIndex(DatabaseHelper.PRODUCT_NAME));
-                    @SuppressLint("Range") String PRICE = cursor.getString(cursor.getColumnIndex(DatabaseHelper.PRODUCT_PRICE));
-                    Log.i("DATABASE_TAG", "I have read ID: " + ID + " USERNAME: " + NAME + "  PRICE: " + PRICE);
-                    productList.add(new Product(ID, NAME, PRICE));
-                } while (cursor.moveToNext());
-            }
-
-            for (Product product : productList) {
-                if (Objects.equals(product.id, id)) {
-                    productData = product;
-                }
-            }
+            productCursor.moveToFirst();
+            productData = new Product(
+                    productCursor.getString(productCursor.getColumnIndex(DatabaseHelper.PRODUCT_ID)),
+                    productCursor.getString(productCursor.getColumnIndex(DatabaseHelper.PRODUCT_NAME)),
+                    productCursor.getString(productCursor.getColumnIndex(DatabaseHelper.PRODUCT_PRICE))
+            );
+            productCursor.close();
         }
 
         mAmountDown.setOnClickListener(new View.OnClickListener() {
@@ -119,15 +114,13 @@ public class ProductDetailsFragment extends Fragment {
 
 
     public void addToCart(View view) {
-        dbManager = new DatabaseManager(getContext());
-        try {
-            dbManager.open();
-            Log.i("dbmanager.open", "done");
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.i("dbmanager.open", "failed");
-        }
-        dbManager.insertIntoCart(productData.id, String.valueOf(this.amount), productData.name, productData.price);
+
+        ContentValues cv = new ContentValues();
+        cv.put(CARTPRODUCT_ID, productData.id);
+        cv.put(CARTPRODUCT_NAME, productData.name);
+        cv.put(CARTPRODUCT_PRICE, productData.price);
+        cv.put(CART_AMOUNT, String.valueOf(this.amount));
+        getActivity().getContentResolver().insert(CART_CONTENT_URI, cv);
     }
 
     public void amountUp(View view) {
