@@ -1,27 +1,35 @@
 package com.example.appdev;
 
+import static androidx.core.util.Preconditions.checkNotNull;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.allOf;
+import static org.junit.Assert.assertEquals;
+
 
 import android.content.Context;
+import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.action.ViewActions;
+import androidx.test.espresso.matcher.BoundedMatcher;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
-import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
-
-import static org.junit.Assert.*;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -31,7 +39,7 @@ import static org.junit.Assert.*;
 @RunWith(AndroidJUnit4.class)
 //Was needed to always run the add to cart test first before deleting the item
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class TestsForPhone {
+public class TestsForTablet {
 
     @Rule
     public ActivityScenarioRule<MainActivity> activityRule = new ActivityScenarioRule<MainActivity>(MainActivity.class);
@@ -66,9 +74,8 @@ public class TestsForPhone {
         onView(withId(R.id.shop)).perform(ViewActions.click());
         onView(withId(3)).perform(ViewActions.click());
         onView(withId(R.id.frDetailAddToCart)).perform(ViewActions.click());
-        onView(isRoot()).perform(ViewActions.pressBack());
         onView(withId(R.id.cart)).perform(ViewActions.click());
-        onView(withText("Test3")).check(matches(isDisplayed()));
+        onView(withId(R.id.recycler_view_cart)).check(matches(atPosition(0, hasDescendant(withText("Test3")))));
 
     }
 
@@ -77,5 +84,26 @@ public class TestsForPhone {
         onView(withId(R.id.cart)).perform(ViewActions.click());
         onView(withText("X")).perform(ViewActions.click());
         onView(withText("Test3")).check(doesNotExist());
+    }
+
+    public static Matcher<View> atPosition(final int position, @NonNull final Matcher<View> itemMatcher) {
+        checkNotNull(itemMatcher);
+        return new BoundedMatcher<View, RecyclerView>(RecyclerView.class) {
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("has item at position " + position + ": ");
+                itemMatcher.describeTo(description);
+            }
+
+            @Override
+            protected boolean matchesSafely(final RecyclerView view) {
+                RecyclerView.ViewHolder viewHolder = view.findViewHolderForAdapterPosition(position);
+                if (viewHolder == null) {
+                    // has no item on such position
+                    return false;
+                }
+                return itemMatcher.matches(viewHolder.itemView);
+            }
+        };
     }
 }
