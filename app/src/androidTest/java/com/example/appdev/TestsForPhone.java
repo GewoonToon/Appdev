@@ -62,7 +62,7 @@ public class TestsForPhone {
     }
 
     @Test
-    public void canAddProductToCartAndDeleteProduct(){
+    public void canAddProductToCart(){
         onView(withId(R.id.shop)).perform(ViewActions.click());
         onView(withId(3)).perform(ViewActions.click());
         onView(withId(R.id.frDetailAddToCart)).perform(ViewActions.click());
@@ -72,6 +72,7 @@ public class TestsForPhone {
 
     }
 
+    //Will only work if the cart was completely empty before , didnt find a way to set this up since isDisplayed wont return a boolean
     @Test
     public void canDeleteProductFromCart(){
         onView(withId(R.id.cart)).perform(ViewActions.click());
