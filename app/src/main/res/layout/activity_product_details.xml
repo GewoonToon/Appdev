@@ -6,7 +6,9 @@
     android:fitsSystemWindows="true"
     tools:context=".productDetailsActivity"
     android:orientation="vertical"
-    android:layout_margin="20dp">
+    android:layout_margin="20dp"
+    android:id="@+id/prodDetails"
+    >
 
     <TextView
         android:id="@+id/Title"
@@ -21,6 +23,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/frDetailAddToCart"
         android:text="@string/addtocart"
         android:onClick="addToCart"/>
 

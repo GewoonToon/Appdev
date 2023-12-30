@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
     public void toDetails(View view) {
         if (!mMasterDetail) {
             Intent intent = new Intent(this, productDetailsActivity.class);
+            Log.i("Id log in main", ""+view.getId());
             intent.putExtra("id", String.valueOf(view.getId()));
             startActivity(intent);
         } else{

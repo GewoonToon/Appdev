@@ -74,15 +74,15 @@ public class ShopFragment extends Fragment {
         productData.moveToFirst();
 
         //Product data cursor object cant move, loop works when changed to cursor.moveToFirst()
-        while (productData.moveToNext()){
+        /*while (productData.moveToNext()){
             @SuppressLint("Range") String ID = cursor.getString(cursor.getColumnIndex(DatabaseHelper.PRODUCT_ID));
             @SuppressLint("Range") String NAME = cursor.getString(cursor.getColumnIndex(DatabaseHelper.PRODUCT_NAME));
             @SuppressLint("Range") String PRICE = cursor.getString(cursor.getColumnIndex(DatabaseHelper.PRODUCT_PRICE));
             Log.i("DATABASE_TAG", "I have read ID: " + ID + " NAME: " + NAME + "  PRICE: " + PRICE);
             productList.add(new Product(ID, NAME, PRICE));
-        }
+        }*/
 
-        /*if(cursor.moveToFirst()) {
+        if(cursor.moveToFirst()) {
             do {
                 @SuppressLint("Range") String ID = cursor.getString(cursor.getColumnIndex(DatabaseHelper.PRODUCT_ID));
                 @SuppressLint("Range") String NAME = cursor.getString(cursor.getColumnIndex(DatabaseHelper.PRODUCT_NAME));
@@ -90,7 +90,7 @@ public class ShopFragment extends Fragment {
                 Log.i("DATABASE_TAG", "I have read ID: " + ID + " NAME: " + NAME + "  PRICE: " + PRICE);
                 productList.add(new Product(ID, NAME, PRICE));
             } while (cursor.moveToNext());
-        }*/
+        }
         cursor.close();
         productData.close();
 

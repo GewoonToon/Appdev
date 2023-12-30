@@ -6,7 +6,9 @@
     android:layout_margin="20dp"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context=".ProductDetailsFragment">
+    tools:context=".ProductDetailsFragment"
+    android:id="@+id/prodDetails"
+    >
 
     <TextView
         android:id="@+id/frDetailName"
