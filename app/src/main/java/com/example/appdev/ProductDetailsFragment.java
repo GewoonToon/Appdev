@@ -24,8 +24,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Objects;
 
 public class ProductDetailsFragment extends Fragment {
 
@@ -35,7 +33,6 @@ public class ProductDetailsFragment extends Fragment {
     Button mAmountDown;
     Button mAmountUp;
     Button mAddToCart;
-    DatabaseManager dbManager;
     private int amount = 1;
     Product productData;
 

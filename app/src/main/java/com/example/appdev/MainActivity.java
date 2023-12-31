@@ -24,14 +24,11 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.appdev.databinding.ActivityMainBinding;
 
-import java.util.ArrayList;
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     public static boolean mMasterDetail;
     ActivityMainBinding binding;
 
-    DatabaseManager dbManager;
 
 
     @Override

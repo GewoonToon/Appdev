@@ -14,8 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.appdev.databinding.ActivityProductDetailsBinding;
 
-import java.util.ArrayList;
-import java.util.Objects;
 
 import static com.example.appdev.DatabaseHelper.CARTPRODUCT_ID;
 import static com.example.appdev.DatabaseHelper.CARTPRODUCT_NAME;
@@ -27,7 +25,6 @@ import static com.example.appdev.DatabaseHelper.PRODUCT_CONTENT_URI;
 public class productDetailsActivity extends AppCompatActivity {
 
     private ActivityProductDetailsBinding binding;
-    DatabaseManager dbManager;
     private int amount = 1;
 
     @SuppressLint("Range")

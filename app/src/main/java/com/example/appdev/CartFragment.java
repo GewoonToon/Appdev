@@ -5,7 +5,6 @@ import static com.example.appdev.DatabaseHelper.CART_CONTENT_URI;
 import android.annotation.SuppressLint;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,7 +21,6 @@ import java.util.ArrayList;
 
 public class CartFragment extends Fragment {
 
-    DatabaseManager dbManager;
     TextView title;
 
     public CartFragment() { }
@@ -52,35 +50,20 @@ public class CartFragment extends Fragment {
 
         String projection[] = {"*"};
         Cursor cartData = getActivity().getContentResolver().query(CART_CONTENT_URI, projection, null, null, null);
-        Log.i("dump of cartData", DatabaseUtils.dumpCursorToString(cartData));
-
-        //Add all products from database to an arraylist
-        dbManager = new DatabaseManager(view.getContext());
-        try {
-            dbManager.open();
-            Log.i("dbmanager.open", "done");
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            Log.i("dbmanager.open", "failed");
-        }
 
         ArrayList<Cart> cartList = new ArrayList<>();
-        //Change to fetch Cart
-        Cursor cursor = dbManager.fetchCart();
 
-        if(cursor.moveToFirst()) {
+        if(cartData.moveToFirst()) {
             do {
-                @SuppressLint("Range") String ID = cursor.getString(cursor.getColumnIndex(DatabaseHelper.CART_ID));
-                @SuppressLint("Range") String NAME = cursor.getString(cursor.getColumnIndex(DatabaseHelper.CARTPRODUCT_NAME));
-                @SuppressLint("Range") String PRICE = cursor.getString(cursor.getColumnIndex(DatabaseHelper.CARTPRODUCT_PRICE));
-                @SuppressLint("Range") String AMOUNT = cursor.getString(cursor.getColumnIndex(DatabaseHelper.CART_AMOUNT));
-                //Log.i("DATABASE_TAG", "I have read ID: " + ID + " NAME: " + NAME + "  PRICE: " + PRICE + "   AMOUNT: " + AMOUNT);
+                @SuppressLint("Range") String ID = cartData.getString(cartData.getColumnIndex(DatabaseHelper.CART_ID));
+                @SuppressLint("Range") String NAME = cartData.getString(cartData.getColumnIndex(DatabaseHelper.CARTPRODUCT_NAME));
+                @SuppressLint("Range") String PRICE = cartData.getString(cartData.getColumnIndex(DatabaseHelper.CARTPRODUCT_PRICE));
+                @SuppressLint("Range") String AMOUNT = cartData.getString(cartData.getColumnIndex(DatabaseHelper.CART_AMOUNT));
+                Log.i("DATABASE_TAG", "I have read ID: " + ID + " NAME: " + NAME + "  PRICE: " + PRICE + "   AMOUNT: " + AMOUNT);
                 cartList.add(new Cart(ID, NAME, PRICE, AMOUNT));
-            } while (cursor.moveToNext());
+            } while (cartData.moveToNext());
         }
 
-        cursor.close();
         cartData.close();
 
         CartAdapter adapter = new CartAdapter(cartList);
